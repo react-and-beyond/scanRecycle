@@ -5,7 +5,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import Scan from './ScanPage';
 import styled from 'styled-components/native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faHome, faBarcode } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faBarcode, faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Home = () => {
   const PageWrapper = styled.View`
@@ -37,17 +37,22 @@ const PageWrapper = styled.View`
   flex-wrap: nowrap;
   width: 100%;
 `
-const ButtonLink = styled.View`
-  background-color: #8fbc8f;
-  border: 1px solid #699e69;
-  flex-grow: 1;
-`
-const NavigationText = styled.Text`
-  color: red;
-`
 const NavigationWrap = styled.View`
   flex-direction: row;
 `
+const NavigationText = styled.Text`
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 6px 6px;
+  text-align: center;
+  flex-wrap: nowrap;
+  text-transform: uppercase;
+`
+const ButtonLink = styled.View`
+  background-color: #8fbc8f;
+  flex-grow: 1;
+`
+
 export default function App() {
   return (
     <NativeRouter>
@@ -59,12 +64,17 @@ export default function App() {
         <NavigationWrap>
           <ButtonLink>
             <Link to="/" underlayColor="#699e69" >
-              <NavigationText><FontAwesomeIcon icon={ faHome } />Home</NavigationText>
+              <NavigationText><FontAwesomeIcon icon={ faHome } size={ 28 } color="white" />{"\n"}Home</NavigationText>
             </Link>
           </ButtonLink>
           <ButtonLink>
             <Link to="/scan" underlayColor="#699e69">
-              <NavigationText><FontAwesomeIcon icon={ faBarcode } />Scan</NavigationText>
+              <NavigationText><FontAwesomeIcon icon={ faBarcode } size={ 28 } color="white" />{"\n"}Scan</NavigationText>
+            </Link>
+          </ButtonLink>
+          <ButtonLink>
+            <Link to="/scan" underlayColor="#699e69">
+              <NavigationText><FontAwesomeIcon icon={ faUser } size={ 28 } color="white" />{"\n"}Contact</NavigationText>
             </Link>
           </ButtonLink>
         </NavigationWrap>
