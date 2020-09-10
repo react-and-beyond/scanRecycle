@@ -1,11 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
+
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import Scan from './ScanPage';
 import styled from 'styled-components/native'
+
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faHome, faBarcode, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faQrcode, faTasks, faUser } from '@fortawesome/free-solid-svg-icons'
+
+import Scan from './ScanPage';
+import Scanned from './ScannedPage';
+
+var firebaseConfig = {
+  apiKey: "AIzaSyBkI5KMQt8CiMmZ1CU4FXIYQk78Lm8mxbs",
+  authDomain: "which-recycle-bin.firebaseio.com",
+  databaseURL: "https://which-recycle-bin.firebaseio.com",
+  projectId: "which-recycle-bin",
+  storageBucket: "which-recycle-bin.appspot.com",
+  messagingSenderId: "sender-id",
+  appId: "1:301278519748:android:7d09feb04b6a1984878491",
+  measurementId: "G-measurement-id",
+};
 
 const Home = () => {
   const PageWrapper = styled.View`
@@ -60,6 +79,7 @@ export default function App() {
         <PageWrapper>
           <Route exact path="/" component={Home} />
           <Route path="/scan" component={Scan} />
+          <Route path="/scanned" component={Scanned} />
         </PageWrapper>
         <NavigationWrap>
           <ButtonLink>
@@ -69,7 +89,12 @@ export default function App() {
           </ButtonLink>
           <ButtonLink>
             <Link to="/scan" underlayColor="#699e69">
-              <NavigationText><FontAwesomeIcon icon={ faBarcode } size={ 28 } color="white" />{"\n"}Scan</NavigationText>
+              <NavigationText><FontAwesomeIcon icon={ faQrcode } size={ 28 } color="white" />{"\n"}Scan</NavigationText>
+            </Link>
+          </ButtonLink>
+          <ButtonLink>
+            <Link to="/scanned" underlayColor="#699e69">
+              <NavigationText><FontAwesomeIcon icon={ faTasks } size={ 28 } color="white" />{"\n"}Scanned</NavigationText>
             </Link>
           </ButtonLink>
           <ButtonLink>
