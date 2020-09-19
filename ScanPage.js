@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Alert, Modal, TouchableHighlight } from 'react-native';
+import { TextInput, Text, View, StyleSheet, Button, Alert, Modal, TouchableHighlight } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import styled from 'styled-components/native'
 
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(null);
-
+  const [nameBarcode, setNameBarcode] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -18,7 +22,7 @@ export default function App() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(data);
-    console.log(data.toString());
+    console.warn(data.toString());
     setTimeout(function(){
       setScanned(null);
     }, 9100000);
@@ -42,6 +46,26 @@ export default function App() {
     border-radius: 10px;
     padding: 20px;
   `
+
+  async function addScann() {
+    console.warn('addScann is called !!!');
+    const today = new Date();
+    const date = today.getDate() + "/"+ parseInt(today.getMonth()+1) +"/"+ today.getFullYear();
+    const scanns = firebase.firestore().collection('scan');
+    const scan = scanns.doc(nameBarcode.toString());
+    const data = await scan.set({
+      name: nameBarcode.toString(),
+      barcode: scanned.toString(),
+      createdAt: date.toString()
+    })
+    .then(function(){
+      console.warn('Document successfully added!');
+    })
+    .catch(function(error){
+      console.warn('Error added document: ', error);
+    })
+}
+
   return (
     <View
       style={{
@@ -56,7 +80,18 @@ export default function App() {
 
       { !!scanned && <>
         <Modal>
-          <Text>{`${scanned}`}</Text>
+          <Text>Result after scan:</Text>
+          <TextInput
+            style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
+            onChangeText={barcode => setBarcode(barcode)}
+            value={scanned}
+          />
+          <TextInput
+            style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
+            placeholder="Insert name"
+            onChangeText={(nameBarcode) => setNameBarcode(nameBarcode)}
+            defaultValue={nameBarcode}
+          />
           <View
             style={{
               flexDirection: 'row',
@@ -64,14 +99,14 @@ export default function App() {
               width: '100%',
             }}>
             <Button
-              color="#22a3c4"
+              color="#ede331"
               title={'Scan again'}
               onPress={() => setScanned(null)}
             />
             <Button
               color="#6cbc1b"
               title={'Save'}
-              onPress={() => setScanned(null)} />
+              onPress={() => addScann()}/>
           </View>
         </Modal>
       </>}
