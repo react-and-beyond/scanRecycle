@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "301278519748",
+    "firebase_url": "https://which-recycle-bin.firebaseio.com",
+    "project_id": "which-recycle-bin",
+    "storage_bucket": "which-recycle-bin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301278519748:android:7d09feb04b6a1984878491",
+        "android_client_info": {
+          "package_name": "com.claudiutodiras.whichRecycleBin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301278519748-50crbcplc9j4ktnua6gk4ub584if0lnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkI5KMQt8CiMmZ1CU4FXIYQk78Lm8mxbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301278519748-50crbcplc9j4ktnua6gk4ub584if0lnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
