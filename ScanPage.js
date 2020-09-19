@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Alert, Modal, TouchableHighlight } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import styled from 'styled-components/native'
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -20,9 +21,8 @@ export default function App() {
     console.log(data.toString());
     setTimeout(function(){
       setScanned(null);
-    }, 10000);
+    }, 9100000);
     //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-
   };
 
 
@@ -33,6 +33,15 @@ export default function App() {
     return <Text>No access to camera</Text>;
   }
 
+  const Modal = styled.View`
+    background-color: #f0f0f0;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
+  `
   return (
     <View
       style={{
@@ -45,7 +54,27 @@ export default function App() {
         style={StyleSheet.absoluteFillObject}
       />
 
-      { !!scanned && <><Text>{`${scanned}`}</Text><Button title={'Tap to Scan Again'} onPress={() => setScanned(null)} /></>}
+      { !!scanned && <>
+        <Modal>
+          <Text>{`${scanned}`}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}>
+            <Button
+              color="#22a3c4"
+              title={'Scan again'}
+              onPress={() => setScanned(null)}
+            />
+            <Button
+              color="#6cbc1b"
+              title={'Save'}
+              onPress={() => setScanned(null)} />
+          </View>
+        </Modal>
+      </>}
     </View>
   );
 }
