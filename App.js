@@ -26,6 +26,20 @@ var firebaseConfig = {
   measurementId: "G-measurement-id",
 };
 
+firebase.initializeApp(firebaseConfig);
+
+async function test() {
+  const scanns = firebase.firestore().collection('scan');
+  const scan = scanns.doc('qKEbAHuUW7P8DUtLykIL');
+  const data = await scan.get();
+  if (data.exists) {
+    console.log("Document data:", data.data());
+  }else{
+    console.log("No document");
+  }
+}
+test();
+
 const Home = () => {
   const PageWrapper = styled.View`
     justify-content: center;
