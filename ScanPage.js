@@ -22,10 +22,10 @@ export default function App() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(data);
-    console.warn(data.toString());
+    //console.warn(data.toString());
     setTimeout(function(){
       setScanned(null);
-    }, 9100000);
+    }, 910000);
     //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
@@ -48,7 +48,7 @@ export default function App() {
   `
 
   async function addScann() {
-    console.warn('addScann is called !!!');
+    //console.warn('addScann is called !!!');
     const today = new Date();
     const date = today.getDate() + "/"+ parseInt(today.getMonth()+1) +"/"+ today.getFullYear();
     const scanns = firebase.firestore().collection('scan');
@@ -85,6 +85,7 @@ export default function App() {
             style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
             onChangeText={barcode => setBarcode(barcode)}
             value={scanned}
+            editable={false}
           />
           <TextInput
             style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
@@ -100,7 +101,7 @@ export default function App() {
             }}>
             <Button
               color="#ede331"
-              title={'Scan again'}
+              title={'Cancel'}
               onPress={() => setScanned(null)}
             />
             <Button
