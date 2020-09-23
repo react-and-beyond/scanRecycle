@@ -8,11 +8,20 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
+const StyledView = styled.View`
+  background-color: #fff;
+  margin: 20px;
+  border-radius: 20px;
+  padding: 35px;
+  align-items: center;
+  elevation: 5;
+`
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(null);
   const [nameBarcode, setNameBarcode] = useState('');
 
+  console.warn('scanned', scanned);
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -37,16 +46,6 @@ export default function App() {
     return <Text>No access to camera</Text>;
   }
 
-  const Modal = styled.View`
-    background-color: #f0f0f0;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    margin: 0 auto;
-    border-radius: 10px;
-    padding: 20px;
-  `
-
   async function addScann() {
     //console.warn('addScann is called !!!');
     const today = new Date();
@@ -54,9 +53,9 @@ export default function App() {
     const scanns = firebase.firestore().collection('scan');
     const scan = scanns.doc(nameBarcode.toString());
     const data = await scan.set({
-      name: nameBarcode.toString(),
-      barcode: scanned.toString(),
-      createdAt: date.toString()
+      name: nameBarcode,
+      barcode: scanned,
+      createdAt: date
     })
     .then(function(){
       console.warn('Document successfully added!');
@@ -78,20 +77,22 @@ export default function App() {
         style={StyleSheet.absoluteFillObject}
       />
 
-      { !!scanned && <>
-        <Modal>
+      <Modal
+        visible={!!scanned}
+        transparent={true}
+        >
+        <StyledView>
           <Text>Result after scan:</Text>
           <TextInput
             style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
-            onChangeText={barcode => setBarcode(barcode)}
             value={scanned}
             editable={false}
           />
           <TextInput
             style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
             placeholder="Insert name"
-            onChangeText={(nameBarcode) => setNameBarcode(nameBarcode)}
-            defaultValue={nameBarcode}
+            onChangeText={setNameBarcode}
+            value={nameBarcode}
           />
           <View
             style={{
@@ -107,10 +108,10 @@ export default function App() {
             <Button
               color="#6cbc1b"
               title={'Save'}
-              onPress={() => addScann()}/>
+              onPress={addScann}/>
           </View>
-        </Modal>
-      </>}
+        </StyledView>
+      </Modal>
     </View>
   );
 }
