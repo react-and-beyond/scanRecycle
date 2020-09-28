@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, StatusBar } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -89,6 +89,7 @@ const ButtonLink = styled.View`
 export default function App() {
   return (
     <NativeRouter>
+      <StatusBar hidden />
       <AppWrapper>
         <PageWrapper>
           <Route exact path="/" component={Home} />
