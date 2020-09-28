@@ -12,8 +12,10 @@ import "firebase/firestore";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faHome, faQrcode, faTasks, faUser } from '@fortawesome/free-solid-svg-icons'
 
+import Home from './HomePage';
 import Scan from './ScanPage';
 import Scanned from './ScannedPage';
+import Contact from './ContactPage';
 
 var firebaseConfig = {
   apiKey: "AIzaSyBkI5KMQt8CiMmZ1CU4FXIYQk78Lm8mxbs",
@@ -28,35 +30,6 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-async function test() {
-  const scanns = firebase.firestore().collection('scan');
-  const scan = scanns.doc('qKEbAHuUW7P8DUtLykIL');
-  const data = await scan.get();
-  if (data.exists) {
-    console.log("Document data:", data.data());
-  }else{
-    console.log("No document");
-  }
-}
-test();
-
-const Home = () => {
-  const PageWrapper = styled.View`
-    justify-content: center;
-    align-items: center;
-    background-color: #f0f0f0;
-    width: 100%;
-  `
-  return(
-    <PageWrapper>
-      <Text>Bun venit</Text>
-      <Button
-        color="darkseagreen"
-        title="Scaneaza codul acum !"
-      />
-    </PageWrapper>
-  )
-};
 const AppWrapper = styled.View`
   display: flex;
   flex-wrap: nowrap;
