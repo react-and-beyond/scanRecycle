@@ -8,6 +8,11 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
+const ScanPageWrapper = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+`
 const StyledView = styled.View`
   background-color: #fff;
   margin: 20px;
@@ -16,12 +21,19 @@ const StyledView = styled.View`
   align-items: center;
   elevation: 5;
 `
+const CustomTextInput = styled.TextInput`
+  width: 100%;
+  border-color: gray;
+  border-width: 1px;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+`
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(null);
   const [nameBarcode, setNameBarcode] = useState('');
 
-  console.warn('scanned', scanned);
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -49,7 +61,7 @@ export default function App() {
   async function addScann() {
     //console.warn('addScann is called !!!');
     const today = new Date();
-    const date = today.getDate() + "/"+ parseInt(today.getMonth()+1) +"/"+ today.getFullYear();
+    const date = today.getFullYear() + "/"+ parseInt(today.getMonth()+1) +"/"+ today.getDate();
     const scanns = firebase.firestore().collection('scan');
     const scan = scanns.doc(nameBarcode.toString());
     const data = await scan.set({
@@ -59,6 +71,7 @@ export default function App() {
     })
     .then(function(){
       console.warn('Document successfully added!');
+      setScanned(null);
     })
     .catch(function(error){
       console.warn('Error added document: ', error);
@@ -66,30 +79,22 @@ export default function App() {
 }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
+    <ScanPageWrapper>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-
       <Modal
         visible={!!scanned}
         transparent={true}
         >
         <StyledView>
           <Text>Result after scan:</Text>
-          <TextInput
-            style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
+          <CustomTextInput
             value={scanned}
             editable={false}
           />
-          <TextInput
-            style={{ width: '100%', borderColor: 'gray', borderWidth: 1, borderRadius: 10, padding: 5, margin: 5 }}
+          <CustomTextInput
             placeholder="Insert name"
             onChangeText={setNameBarcode}
             value={nameBarcode}
@@ -112,6 +117,6 @@ export default function App() {
           </View>
         </StyledView>
       </Modal>
-    </View>
+    </ScanPageWrapper>
   );
 }
