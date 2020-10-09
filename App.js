@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, StatusBar } from 'react-native';
+import { Text, View, StyleSheet, Button, StatusBar, ScrollView } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -37,11 +37,11 @@ const AppWrapper = styled.View`
   height: 100%;
 `
 const PageWrapper = styled.View`
-  background-color: rgba(255, 255, 255, 1);
   flex-grow: 1;
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
+  height: 100px;
 `
 const NavigationWrap = styled.View`
   flex-direction: row;
@@ -55,10 +55,9 @@ const NavigationText = styled.Text`
   text-transform: uppercase;
 `
 const ButtonLink = styled.View`
-  background-color: #8fbc8f;
+  background-color: #209dd7;
   flex-grow: 1;
 `
-
 export default function App() {
   return (
     <NativeRouter>
@@ -68,25 +67,26 @@ export default function App() {
           <Route exact path="/" component={Home} />
           <Route path="/scan" component={Scan} />
           <Route path="/scanned" component={Scanned} />
+          <Route path="/contact" component={Contact} />
         </PageWrapper>
         <NavigationWrap>
           <ButtonLink>
-            <Link to="/" underlayColor="#699e69" >
+            <Link to="/" underlayColor="#1188BF" >
               <NavigationText><FontAwesomeIcon icon={ faHome } size={ 28 } color="white" />{"\n"}Home</NavigationText>
             </Link>
           </ButtonLink>
           <ButtonLink>
-            <Link to="/scan" underlayColor="#699e69">
+            <Link to="/scan" underlayColor="#1188BF">
               <NavigationText><FontAwesomeIcon icon={ faQrcode } size={ 28 } color="white" />{"\n"}Scan</NavigationText>
             </Link>
           </ButtonLink>
           <ButtonLink>
-            <Link to="/scanned" underlayColor="#699e69">
+            <Link to="/scanned" underlayColor="#1188BF">
               <NavigationText><FontAwesomeIcon icon={ faTasks } size={ 28 } color="white" />{"\n"}Scanned</NavigationText>
             </Link>
           </ButtonLink>
           <ButtonLink>
-            <Link to="/scan" underlayColor="#699e69">
+            <Link to="/contact" underlayColor="#1188BF">
               <NavigationText><FontAwesomeIcon icon={ faUser } size={ 28 } color="white" />{"\n"}Contact</NavigationText>
             </Link>
           </ButtonLink>
