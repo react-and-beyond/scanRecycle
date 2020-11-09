@@ -1,0 +1,5 @@
+modal cu formular
+la salvare -> adaugare informatiile in firestore
+
+22 septembrie 2020 :
+  dupa scanare, daca exista produsul, sa returneze in modal informatiile din firebase, si apoi daca ele sunt modificate, sa se apeleze "update"
