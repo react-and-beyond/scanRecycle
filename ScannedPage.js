@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, ActivityIndicator, Text, Button, View,  TouchableHighlight } from 'react-native';
+import { FlatList, ActivityIndicator, Text, Button, View, TouchableOpacity } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
+import styled from 'styled-components/native'
 
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-// async function readScann() {
-//   console.warn('readScann is called !!!');
-//   const scanns = firebase.firestore().collection('scan');
-//   scanns.get().then(function(querySnapshot) {
-//     querySnapshot.forEach(function(doc) {
-//       console.warn(doc.id, " => ", doc.data());
-//     });
-//   })
-// }
-
+const ScannedWrapper = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+`
+const ViewItem = styled.TouchableOpacity`
+  background-color: rgba(32, 157, 215, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(32, 157, 215, 1);
+  margin: 8px auto;
+  padding: 16px;
+  width: 90%;
+`
+const ItemText = styled.Text`
+  text-align: left;
+  font-size: 16px;
+`
 function Scans() {
   const [loading, setLoading] = useState(true);
   const [scans, setScans] = useState([]);
@@ -23,17 +32,18 @@ function Scans() {
   useEffect(() => {
     const scaned = firebase.firestore()
       .collection('scan')
+      .orderBy('createdAt', 'asc')
       .get()
       .then(querySnapshot => {
         const scans = [];
-        // console.warn('querySnapshot: ',querySnapshot);
-        querySnapshot.forEach(documentSnapshot => {
-          scans.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
-        // console.warn('scans', scans)
+        querySnapshot.forEach(
+            documentSnapshot => {
+              scans.push({
+                ...documentSnapshot.data(),
+                key: documentSnapshot.id,
+              });
+            }
+        );
         setScans(scans);
         setLoading(false);
       });
@@ -43,16 +53,17 @@ function Scans() {
   if (loading) {
     return <ActivityIndicator />;
   }
-  console.warn('scans',scans)
   return (
     <FlatList
       data={scans}
       renderItem={({ item }) => (
-        <View style={{ height: 50, flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>ID: {item.id}</Text>
-          <Text>Name {item.name}</Text>
-          <Text>Barcode: {item.barcode}</Text>
-        </View>
+        <ViewItem
+          onPress={ () => console.warn(item.barcode) }
+          >
+          <ItemText>Name: <Text>{item.name}</Text></ItemText>
+          <ItemText>Barcode: <Text>{item.barcode}</Text></ItemText>
+          <ItemText>Created at: <Text>{item.createdAt}</Text></ItemText>
+        </ViewItem>
       )}
     />
   );
@@ -61,19 +72,8 @@ function Scans() {
 export default function App() {
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
-      <Text style={{
-        fontSize: 22,
-        padding: 16
-      }}>
-        Here is page with results after scanned - returned by firebase.
-      </Text>
+    <ScannedWrapper>
       <Scans/>
-    </View>
+    </ScannedWrapper>
   );
 }
