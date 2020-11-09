@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <HomeWrapper>
       <HeadingHome>Hello,</HeadingHome>
-      <SubHeading>This is <AppNameText>which-recycle-bin</AppNameText> app.</SubHeading>
+      <SubHeading>I am <AppNameText>which-recycle-bin</AppNameText> app.</SubHeading>
     </HomeWrapper>
   );
 }
