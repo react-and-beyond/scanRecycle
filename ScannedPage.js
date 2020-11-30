@@ -25,7 +25,7 @@ const ItemText = styled.Text`
   text-align: left;
   font-size: 16px;
 `
-function Scans() {
+function Scanned() {
   const [loading, setLoading] = useState(true);
   const [scans, setScans] = useState([]);
 
@@ -73,7 +73,7 @@ export default function App() {
 
   return (
     <ScannedWrapper>
-      <Scans/>
+      <Scanned/>
     </ScannedWrapper>
   );
 }
